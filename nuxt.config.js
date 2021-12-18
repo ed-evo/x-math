@@ -9,6 +9,8 @@ const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES'
   : {}
 
 export default defineNuxtConfig({
+  // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
+  ssr: false,
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
@@ -75,6 +77,9 @@ export default defineNuxtConfig({
         }
       }
     }
+  },
+  bridge: {
+    nitro: false
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
