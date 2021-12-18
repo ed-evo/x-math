@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_OPTIONS=--openssl-legacy-provider nuxi dev",
-    "generate": "NODE_OPTIONS=--openssl-legacy-provider nuxi generate",
-    "generate:gh-pages": "NODE_OPTIONS=--openssl-legacy-provider DEPLOY_ENV=GH_PAGES nuxi generate",
+    "dev": "nuxi dev",
+    "generate": "nuxi generate",
+    "generate:gh-pages": "DEPLOY_ENV=GH_PAGES nuxi generate",
     "lint:js": "eslint --ext \".js,.ts,.vue\" --ignore-path .gitignore .",
     "lint": "yarn lint:js",
     "lintfix": "yarn lint:js --fix",
