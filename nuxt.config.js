@@ -1,15 +1,25 @@
+import { defineNuxtConfig } from '@nuxt/bridge'
+
 import colors from 'vuetify/es5/util/colors'
 
-export default {
+const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
+  base: process.env.NODE_ENV === 'production' ? '/x-math/' : '/'
+}: {}
+
+export default defineNuxtConfig({
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
+
+  router: {
+    ...routerBase
+  },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s - x-math',
     title: 'x-math',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'it'
     },
     meta: [
       { charset: 'utf-8' },
@@ -72,4 +82,4 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   }
-}
+})
