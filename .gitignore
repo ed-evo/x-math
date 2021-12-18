@@ -88,3 +88,6 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# nuxt-3 build output folder
+.output
