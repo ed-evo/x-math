@@ -2,9 +2,11 @@ import { defineNuxtConfig } from '@nuxt/bridge'
 
 import colors from 'vuetify/es5/util/colors'
 
-const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
-  base: process.env.NODE_ENV === 'production' ? '/x-math/' : '/'
-}: {}
+const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES'
+  ? {
+      base: process.env.NODE_ENV === 'production' ? '/x-math/' : '/'
+    }
+  : {}
 
 export default defineNuxtConfig({
   // Target: https://go.nuxtjs.dev/config-target
