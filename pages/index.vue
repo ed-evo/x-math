@@ -1,31 +1,27 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12" sm="8" md="6">
-      <v-card class="logo py-4 d-flex justify-center">
-        <NuxtLogo />
-        <VuetifyLogo />
-      </v-card>
       <v-card>
-        <v-card-title class="headline">
-          Tabelline
+        <v-card-title class="headline text-center d-block" >
+          {{current.leftHandSide.value}} X {{current.rightHandSide.value}} =
         </v-card-title>
-        <v-card-text>
-          <p
-            v-for="op in tabelline" :key="`${op.leftHandSide.value}${op.rightHandSide.value}`"
-          >
-          {{op.leftHandSide.value}} X {{op.rightHandSide.value}} = {{op.value}}
-          </p>
-
-        </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
+          <v-item-group>
+            <v-btn
+              text
+              v-for="choice in choices" :key="choice"
+              @click="change(choice)"
+            >
+              {{ choice }}
+            </v-btn>
+            <v-btn
+              text
+              @click="change(NaN)"
+            >
+              nessuno
+            </v-btn>
+          </v-item-group>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -38,7 +34,17 @@ const BASIC_OPERATIONS = createNamespacedHelpers('basic-operations');
 export default {
   name: 'IndexPage',
   computed: {
-    ...BASIC_OPERATIONS.mapGetters(['tabelline'])
+    ...BASIC_OPERATIONS.mapState(['current', 'choices'])
+  },
+  created () {
+    this.next();
+  },
+  methods: {
+    ...BASIC_OPERATIONS.mapActions(['next', 'submit']),
+    async change (value) {
+      alert((await this.submit({ value })) ? "CORRETTO" : "ERRATO")
+      this.next()
+    }
   }
 }
 </script>
