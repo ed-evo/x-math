@@ -10,6 +10,6 @@ export function choices({ question }) {
   return question.choices;
 }
 
-export function getLogs({ history }) {
+export function logs({ history }) {
   return history;
 }

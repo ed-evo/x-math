@@ -7,5 +7,5 @@ export function setAnswer({ question }, { answer }) {
 }
 
 export function addLog({ history }, { question }) {
-  history.push(question);
+  history.unshift(question);
 }

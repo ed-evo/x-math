@@ -3,7 +3,7 @@
     <v-col cols="12" sm="8" md="6">
       <v-card>
         <v-card-title class="headline text-center d-block" >
-          {{question.leftHandSide.value}} X {{question.rightHandSide.value}} =
+          {{ question.toString() }} =
         </v-card-title>
         <v-card-actions>
           <v-spacer />
@@ -13,16 +13,25 @@
               v-for="choice in choices" :key="choice"
               @click="change(choice)"
             >
-              {{ choice }}
-            </v-btn>
-            <v-btn
-              text
-              @click="change(NaN)"
-            >
-              nessuno
+              {{ isNaN(choice) ? 'nessuno' : choice }}
             </v-btn>
           </v-item-group>
         </v-card-actions>
+      </v-card>
+      <v-card>
+        <v-card-text>
+          <v-timeline
+            dense
+          >
+            <v-timeline-item
+            small
+              v-for="item in logs" :key="item.answerTime.toMillis()"
+              :color="item.isCorrect ? 'green' : 'red'"
+            >
+              {{item.toString()}}
+            </v-timeline-item>
+          </v-timeline>
+        </v-card-text>
       </v-card>
     </v-col>
   </v-row>
@@ -34,7 +43,7 @@ const BASIC_OPERATIONS = createNamespacedHelpers('basic-operations');
 export default {
   name: 'IndexPage',
   computed: {
-    ...BASIC_OPERATIONS.mapGetters(['question', 'choices'])
+    ...BASIC_OPERATIONS.mapGetters(['question', 'choices', 'logs'])
   },
   created () {
     this.next();
@@ -42,8 +51,7 @@ export default {
   methods: {
     ...BASIC_OPERATIONS.mapActions(['next', 'submit']),
     async change (value) {
-      alert((await this.submit({ value })) ? "CORRETTO" : "ERRATO")
-      this.next()
+      await this.submit({ value });
     }
   }
 }
