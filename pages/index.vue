@@ -3,7 +3,7 @@
     <v-col cols="12" sm="8" md="6">
       <v-card>
         <v-card-title class="headline text-center d-block" >
-          {{current.leftHandSide.value}} X {{current.rightHandSide.value}} =
+          {{question.leftHandSide.value}} X {{question.rightHandSide.value}} =
         </v-card-title>
         <v-card-actions>
           <v-spacer />
@@ -34,7 +34,7 @@ const BASIC_OPERATIONS = createNamespacedHelpers('basic-operations');
 export default {
   name: 'IndexPage',
   computed: {
-    ...BASIC_OPERATIONS.mapState(['current', 'choices'])
+    ...BASIC_OPERATIONS.mapGetters(['question', 'choices'])
   },
   created () {
     this.next();

@@ -1,8 +1,11 @@
 export function setCurrent(state, { current }) {
-  state.current = current;
+  state.question = current;
 }
 
-export function setChoices(state, choices) {
-  console.log(arguments)
-  state.choices = choices;
+export function setAnswer({ question }, { answer }) {
+  question.answer = answer;
+}
+
+export function addLog({ history }, { question }) {
+  history.push(question);
 }

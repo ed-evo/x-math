@@ -1,5 +1,6 @@
 import { Expression } from "~~/models/expressions";
 import { random, shuffle, sample } from "lodash";
+import { MultiChoice } from "~~/models/questions";
 
 export function next ({state, commit}) {
   let next = <Expression<number>> sample(state.tabelline);
@@ -11,23 +12,14 @@ export function next ({state, commit}) {
     let rnd = sample(state.tabelline);
     choices.add(rnd.value);
   } while (choices.size < 3);
-  console.log(choices, shuffle(choices.values()))
 
-  commit('setCurrent', { current: next });
-  commit('setChoices', shuffle(Array.from(choices)))
+  commit('setCurrent', { current: new MultiChoice(next, choices) });
   return next;
 }
 
-export function submit ({ state }, { value }) {
-  let currentValue = state.current.value;
-  console.log(currentValue, value, Number.isNaN(value));
-  if (value === currentValue) {
-    return true;
-  }
-  if (Number.isNaN(value)) {
-    let choices = <number[]> state.choices;
-    return !choices.includes(currentValue);
-  }
-  return false;
-
+export async function submit ({ getters, commit, dispatch }, { value }) {
+  commit('setAnswer', { answer: value });
+  let isCorrect = getters.isCorrect;
+  await dispatch('next');
+  return isCorrect;
 }
