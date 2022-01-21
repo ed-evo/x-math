@@ -49,6 +49,7 @@ export default defineNuxtConfig({
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify'
   ],
@@ -78,9 +79,7 @@ export default defineNuxtConfig({
       }
     }
   },
-  bridge: {
-    nitro: false
-  },
+  bridge: false,
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

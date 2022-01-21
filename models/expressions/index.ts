@@ -6,8 +6,8 @@ export enum Operator {
 }
 
 export interface Expression<T> {
-  get value(): T;
-  toString(): string;
+  readonly value: T;
+  toString: () => string;
 }
 
 export class Value<T> implements Expression<T> {
@@ -18,15 +18,15 @@ export class Value<T> implements Expression<T> {
   }
 
   toString() {
-    return "" + this.value
+    return "" + this.value;
   }
 }
 
 export interface BinaryOperation<T> extends Expression<T> {
-  get leftHandSide(): Expression<T>;
-  get rightHandSide(): Expression<T>;
-  get operator(): Operator;
-  toInfixString(): string;
+  readonly leftHandSide: Expression<T>;
+  readonly rightHandSide: Expression<T>;
+  readonly operator: Operator;
+  toInfixString: () => string;
 }
 
 abstract class BasicBinaryOperation<T> implements BinaryOperation<T> {

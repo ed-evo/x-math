@@ -9,10 +9,17 @@ export class NotAnsweredJetError extends Error {
 
 export class MultiChoice {
 
+  private _creationTime: DateTime;
   private _answer: number;
   private _answerTime: DateTime;
 
-  constructor(private _question: Expression<number>, private _choices: Set<number>) {}
+  constructor(private _question: Expression<number>, private _choices: Set<number>) {
+    this._creationTime = DateTime.now().setZone("Europe/Rome");
+  }
+
+  get creationTime() {
+    return this._creationTime;
+  }
 
   get question() {
     return this._question;
@@ -28,6 +35,7 @@ export class MultiChoice {
   set answer (answer: number) {
     this._answer = answer;
     this._answerTime = DateTime.now().setZone("Europe/Rome");
+    console.log(this)
   }
   get isAnswered() {
     return this._answer !== undefined;
