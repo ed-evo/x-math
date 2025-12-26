@@ -45,9 +45,11 @@
 
 <script setup lang="ts">
 import { switchMap, Subject, tap, timer, map, filter, merge, EMPTY } from 'rxjs'
-import { random, shuffle, sample, isNil } from "lodash"
+import _ from "lodash"
 import { Multiplication } from '~/models/expressions';
 import { MultiChoice } from '~/models/questions';
+
+const { random, shuffle, sample, isNil } = _;
 
 interface AnswerEvent {
   choice: number;
