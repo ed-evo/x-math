@@ -5,12 +5,6 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
-  $production: {
-    app: {
-      baseURL: process.env.BASE_URL || '/'
-    }
-  },
-
   modules: ['@nuxt/eslint', '@pinia/nuxt'],
 
   build: {
@@ -29,6 +23,7 @@ export default defineNuxtConfig({
     }
   },
   app: {
+    baseURL: process.env.BASE_URL || '/',
     head: {
       titleTemplate: '%s - x-math',
       title: 'x-math',
