@@ -1,7 +1,7 @@
-import { Expression } from "../expressions";
+import { type Expression } from "../expressions";
 import { DateTime } from 'luxon'
 
-export class NotAnsweredJetError extends Error {
+export class NotAnsweredYetError extends Error {
   constructor(message: string) {
     super(message);
   }
@@ -10,7 +10,7 @@ export class NotAnsweredJetError extends Error {
 export class MultiChoice {
 
   private _creationTime: DateTime;
-  private _answer: number;
+  private _answer?: number;
   private _answerTime: DateTime;
 
   constructor(private _question: Expression<number>, private _choices: Set<number>) {
@@ -29,7 +29,7 @@ export class MultiChoice {
     return this._choices;
   }
 
-  get answer() {
+  get answer(): number | undefined {
     return this._answer;
   }
   set answer (answer: number) {
@@ -47,7 +47,7 @@ export class MultiChoice {
 
   get isCorrect() {
     if (!this.isAnswered) {
-      throw new NotAnsweredJetError("Domanda non risposta");
+      throw new NotAnsweredYetError("Domanda non risposta");
     }
     let correctValue = this.question.value;
     let response = false;
