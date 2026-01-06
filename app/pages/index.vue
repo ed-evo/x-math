@@ -11,16 +11,15 @@
           {{ question.question.toString() }} =
         </v-card-title>
         <v-card-actions>
-          <v-spacer />
-          <v-item-group>
+          <v-btn-group variant="outlined" class="d-flex w-100" >
             <v-btn
-              text
               v-for="choice in question.choices" :key="String(isNaN(choice) ? 'nan' : choice)"
               @click="interactions$.next({choice, question})"
+              class="flex-grow-1"
             >
               {{ isNaN(choice) ? 'nessuno' : choice }}
             </v-btn>
-          </v-item-group>
+          </v-btn-group>
         </v-card-actions>
       </v-card>
       <v-card>
@@ -34,7 +33,11 @@
               :dot-color="item.isCorrect ? 'green' : 'red'"
               :side="item.isCorrect ? 'end' : 'start'"
             >
-              {{item.toString()}}
+              <span v-if="item.isCorrect">{{ item.toString() }}</span>
+              <span v-else>
+                {{ item.question.toString() }} =
+                <span class="text-decoration-line-through">{{ item.answer }}</span> <span class="text-green">{{ item.question.value }}</span>
+              </span>
             </v-timeline-item>
           </v-timeline>
         </v-card-text>
@@ -56,7 +59,7 @@ interface AnswerEvent {
   question: MultiChoice;
 }
 const NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const tabelline = NUMBERS.flatMap(a => NUMBERS.map(b => new Multiplication(a, b)));
+const tabelline = NUMBERS.map(b => new Multiplication(2, b));
 
 const history = ref<MultiChoice[]>([]);
 const control$ = new Subject<boolean>();
@@ -65,7 +68,7 @@ const interactions$ = new Subject<AnswerEvent | null>();
 const question = computed(() => history.value[0]);
 const logs = computed(() => history.value.filter(question => question.isAnswered));
 
-let timer$ = timer(0, 3000);
+let timer$ = timer(0, 30000);
 merge(
   control$.pipe(map(start => start === true)),
   interactions$.pipe(map((value) => !isNil(value)))
@@ -76,15 +79,16 @@ merge(
   map(() => sample(tabelline)),
   map((next: Multiplication) => {
     let choices = new Set<number>();
-    if (random(1, 100) % 4 < 3) {
-      choices.add(next.value);
-    }
+    // if (random(1, 100) % 4 < 3) {
+    //   choices.add(next.value);
+    // }
+    choices.add(next.value);
     do {
       let rnd = sample(tabelline);
       choices.add(rnd.value);
     } while (choices.size < 3);
     choices = new Set<number>(shuffle(Array.from(choices)));
-    choices.add(NaN);
+    // choices.add(NaN);
     return new MultiChoice(next, choices);
   }),
   tap(console.log)
