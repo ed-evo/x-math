@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { Multiplication } from '~/models/expressions';
 
 const { sortBy } = _;
