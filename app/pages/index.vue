@@ -7,37 +7,46 @@
         <v-btn @click="control$.next(false)">stop</v-btn>
       </v-card>
       <v-card v-if="question">
-        <v-card-title class="headline text-center d-block" >
+        <v-card-title class="headline text-center" >
           {{ question.question.toString() }} =
         </v-card-title>
         <v-card-actions>
-          <v-btn-group variant="outlined" class="d-flex w-100" >
-            <v-btn
-              v-for="choice in question.choices" :key="String(isNaN(choice) ? 'nan' : choice)"
-              @click="interactions$.next({choice, question})"
-              class="flex-grow-1"
-            >
-              {{ isNaN(choice) ? 'nessuno' : choice }}
-            </v-btn>
-          </v-btn-group>
+          <v-row>
+            <v-col v-for="choice in question.choices" :key="String(isNaN(choice) ? 'nan' : choice)">
+              <v-chip
+                @click="interactions$.next({choice, question})"
+                class="w-100 justify-center"
+                label
+              >
+                {{ isNaN(choice) ? 'nessuno' : choice }}
+              </v-chip>
+            </v-col>
+          </v-row>
         </v-card-actions>
       </v-card>
       <v-card>
         <v-card-text>
           <v-timeline
             dense
+            side="start"
           >
             <v-timeline-item
               small
               v-for="item in logs" :key="item.creationTime.toMillis()"
-              :dot-color="item.isCorrect ? 'green' : 'red'"
-              :side="item.isCorrect ? 'end' : 'start'"
+              dot-color="transparent"
+              :icon-color="item.isCorrect ? 'green-accent-2' : 'amber-accent-2'"
+              :icon="item.isCorrect ? 'mdi-robot-happy' : 'mdi-robot-confused'"
             >
-              <span v-if="item.isCorrect">{{ item.toString() }}</span>
-              <span v-else>
-                {{ item.question.toString() }} =
-                <span class="text-decoration-line-through">{{ item.answer }}</span> <span class="text-green">{{ item.question.value }}</span>
-              </span>
+              <span>{{ item.question.toString() }} =</span>
+              <template v-slot:opposite>
+                <v-chip
+                v-for="choice in item.choices" :key="String(isNaN(choice) ? 'nan' : choice)"
+                :color="choice === item.question.value ? 'green-accent-2' : (choice === item.answer ? 'amber-accent-2' : 'grey-lighten-1')"
+                >
+                  {{ choice }}
+                </v-chip>
+              </template>
+
             </v-timeline-item>
           </v-timeline>
         </v-card-text>
